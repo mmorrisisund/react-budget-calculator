@@ -11,9 +11,23 @@ const initialExpense = [
   { id: uuid(), charge: 'car payment', amount: 400 },
   { id: uuid(), charge: 'credit card', amount: 1200 }
 ]
-console.log(initialExpense)
+
 function App () {
   const [expenses, setExpenses] = useState(initialExpense)
+  const [charge, setCharge] = useState('')
+  const [amount, setAmount] = useState('')
+
+  const handleCharge = e => setCharge(e.target.value)
+  const handleAmount = e => setAmount(e.target.value)
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    if (charge !== '' && amount > 0) {
+      setExpenses([...expenses, { id: uuid(), charge, amount }])
+      setCharge('')
+      setAmount('')
+    }
+  }
 
   return (
     <>
@@ -21,14 +35,20 @@ function App () {
       <h1>budget calculator</h1>
 
       <main className='App'>
-        <ExpenseForm />
+        <ExpenseForm
+          charge={charge}
+          amount={amount}
+          handleCharge={handleCharge}
+          handleAmount={handleAmount}
+          handleSubmit={handleSubmit}
+        />
         <ExpenseList expenses={expenses} />
       </main>
 
       <h1>
         total spending :{' '}
         <span className='total'>
-          ${expenses.reduce((sum, { amount }) => sum + amount, 0)}
+          ${expenses.reduce((sum, { amount }) => sum + parseInt(amount), 0)}
         </span>
       </h1>
     </>
