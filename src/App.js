@@ -16,22 +16,33 @@ function App () {
   const [expenses, setExpenses] = useState(initialExpense)
   const [charge, setCharge] = useState('')
   const [amount, setAmount] = useState('')
+  const [alert, setAlert] = useState({ show: false })
 
   const handleCharge = e => setCharge(e.target.value)
   const handleAmount = e => setAmount(e.target.value)
-
+  const handleAlert = ({ type, text }) => {
+    setAlert({ show: true, type, text })
+    setTimeout(() => setAlert({ show: false }), 3000)
+  }
   const handleSubmit = e => {
     e.preventDefault()
     if (charge !== '' && amount > 0) {
       setExpenses([...expenses, { id: uuid(), charge, amount }])
+      handleAlert({ type: 'success', text: 'item added' })
       setCharge('')
       setAmount('')
+    } else {
+      handleAlert({
+        type: 'danger',
+        text: 'charge cannot be blank and amount must be greater than 0'
+      })
     }
   }
 
   return (
     <>
-      <Alert />
+      {alert.show && <Alert type={alert.type} text={alert.text} />}
+
       <h1>budget calculator</h1>
 
       <main className='App'>
