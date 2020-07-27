@@ -38,6 +38,13 @@ function App () {
       })
     }
   }
+  const clearItems = () => setExpenses([])
+  const handleDelete = id => {
+    console.log(id)
+  }
+  const handleEdit = id => {
+    console.log(id)
+  }
 
   return (
     <>
@@ -53,7 +60,12 @@ function App () {
           handleAmount={handleAmount}
           handleSubmit={handleSubmit}
         />
-        <ExpenseList expenses={expenses} />
+        <ExpenseList
+          expenses={expenses}
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+          clearItems={clearItems}
+        />
       </main>
 
       <h1>
